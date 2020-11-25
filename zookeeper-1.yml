@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper-1
+  namespace: dc1
+spec:
+  selector:
+    app: zookeeper-1
+  ports:
+    - name: client
+      protocol: TCP
+      port: 2181
+      targetPort: 2181
+    - name: internal1
+      protocol: TCP
+      port: 2888
+      targetPort: 2888
+    - name: internal2
+      protocol: TCP
+      port: 3888
+      targetPort: 3888
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zookeeper-1
+  namespace: dc1
+  labels:
+    app: zookeeper-1
+spec:
+  containers:
+  - name: zookeeper-1
+    image: confluentinc/cp-zookeeper:6.0.0
+    resources:
+      limits:
+        memory: "200Mi"
+      requests:
+        memory: "100Mi"
+    env:
+    - name: ZOOKEEPER_CLIENT_PORT
+      value: "2181"
+    - name: ZOOKEEPER_SERVER_ID
+      value: "1"
+    - name: ZOOKEEPER_SERVERS 
+      value: "zookeeper-1:2888:3888;zookeeper-2:2888:3888;zookeeper-3:2888:3888"
