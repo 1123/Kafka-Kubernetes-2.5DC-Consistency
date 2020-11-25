@@ -1,6 +1,30 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: zookeeper-2
+  namespace: dc1
+spec:
+  type: ExternalName
+  externalName: zookeeper-2.dc2.svc.cluster.local
+  ports:
+  - port: 2181
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper-3
+  namespace: dc1
+spec:
+  type: ExternalName
+  externalName: zookeeper-3.dc3.svc.cluster.local
+  ports:
+  - port: 2181
+
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: zookeeper-1
   namespace: dc1
 spec:
